@@ -1,5 +1,5 @@
 #include <iostream>
-#include "src/RiptideRecorder.h"
+#include "RiptideRecorder/RiptideRecorder.h"
 #include "TestDevice.h"
 using namespace std;
 int main() {
