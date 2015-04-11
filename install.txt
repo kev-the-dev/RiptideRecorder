@@ -1,0 +1,47 @@
+To install
+
+1) Drag RiptideRecorder folder in the zip file into the src folder of your robot project
+
+2) Include RiptideRecorder/RiptideRecorder.h into the file of your project you want to implement teaching and play back functionality
+	#include "RiptideRecorder/RiptideRecorder.h
+
+3) Create a Recorder in your robot init
+	Recorder* myRecorder = new Recorder();
+
+4) For all (supported) actuators you want to record, add them to the recorder (must be a pointer)
+	myRecorder -> AddDevice(mySpeedCtrl); or myRecorder-> AddDevice(*mySpeedCtrl);
+	myRecorder -> AddDevice(mySolenoid); or myRecorder-> AddDevice(*mySolenoid);
+        myRecorder -> AddDevice(myServo); or myRecorder-> AddDevice(*myServo);
+        myRecorder -> AddDevice(myDoubleSolenoid); or myRecorder-> AddDevice(*myDoubleSolenoid);
+        myRecorder -> AddDevice(myRelay); or myRecorder-> AddDevice(*myRelay);
+
+5) Create a macro (or several) to record from this Recorder and play back
+	Macro* myAutonmousMacro = myRecorder -> macro();
+	Macro* myTestingMacro = myRecorder -> macro();
+
+6) While a button is pressed, smartdashboard value changes, etc, record (must be within teleop/test loop). Note: this only records the current acutator values at this instant. You have to call every 5ms if you truly want it to play back the same
+	if (myJoystick.GetRawButton(8)) myAutonmousMacro -> Record();
+	//If using the WPILib joystick button classes in your program
+	myJoystickButton -> ToggleWhenPressed(myAutnomousMacro->GetRecordCommand());
+
+7) If you want your recording to not be lost when the robot turns off, write the macro to a file
+	myAutonmousMacro->WriteFile("myRecordingFile.csv");
+
+8) When you want to play back this recording (like when a joystick is pressed or autonomous starts) play back the recording
+	//If you want to read from a file
+	myAutnomousMacro->ReadFile("myRecordingFile.csv");
+	myAutonmousMacro->PlayReset();
+	//Than in the 5ms loop
+	if (!myAutonomousMacro->IsFinished()) myAutonomousMacro->PlayBack();
+
+	//or if using Command bassed templete
+	myAutonmousMacro->GetPlayCommand("myRecordingFile.csv")->Start(); //if reading from a file
+	myAutonmousMacro->GetPlayCommand()->Start(); //if just recorded and stored in memory
+	myJoystickButton->ToggleWhenPressed(myAutonmousMacro->GetPlayCommand()); //for on joystick press
+
+
+
+
+
+
+	 
