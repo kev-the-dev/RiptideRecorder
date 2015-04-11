@@ -6,7 +6,6 @@
  */
 
 #include "Recorder.h"
-#include <iostream>
 
 Recorder* Recorder::instance = NULL;
 
