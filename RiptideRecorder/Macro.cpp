@@ -50,10 +50,20 @@ void Macro::WriteFile(std::string filename) {
 	 std::ofstream file;
 	 file.open(filename.c_str());
 	 if (file.is_open()) {
-		for (it = Values.begin(); it != Values.end(); it++) {
-			file << it->first->name;
-			for (unsigned int i = 0; i < it->second.size(); i++) {
-				file << "," << it->second[i];
+		 for (it = Values.begin(); it != Values.end(); it++) {
+			 file << it->first->name;
+			if (it != --Values.end()) file << ",";
+		 }
+		 file << "\n";
+
+		 for (unsigned int i = 0; i<length;i++) {
+			 for (it = Values.begin(); it != Values.end(); it++) {
+				 if (i >= it->second.size()) {
+					 file << 0;
+				 }
+				 else file << it->second[i];
+
+				 if (it != --Values.end()) file << ",";
 			}
 			file << "\n";
 		}
@@ -69,23 +79,44 @@ void Macro::ReadFile(std::string filename) {
 		std::string token;
 		size_t pos = 0;
 		Reset();
-		while(std::getline(file,line)) { //for each line of the csv file
-			if ((pos = line.find(delimiter)) != std::string::npos) { //Find the first value (the string before the first comma on this line)
-			    token = line.substr(0, pos);
-				for (it = Values.begin(); it != Values.end(); it++) { //attempt to find the device with this line's name
-					if (token == it->first->name) {
-					    line.erase(0, pos + delimiter.length());
-						while ((pos = line.find(delimiter)) != std::string::npos) { //for each additional value on this line, append the value to the device's values vector
-							token = line.substr(0, pos);
-						    it->second.push_back( (float) std::atof(token.c_str()) );
-						    line.erase(0, pos + delimiter.length());
-						}
-						it->second.push_back( (float) std::atof(line.c_str()) );
-						length = (it->second.size() > length) ? it->second.size() : length;
-						break; //stop looking for device if one was found
-					}
-				}
+
+		std::vector<Device*> list;
+
+		//Get the first line to establish the list of devices
+		std::getline(file,line);
+		while ((pos = line.find(delimiter)) != std::string::npos) {
+			token = line.substr(0, pos);
+			list.push_back(NULL);
+			for (it = Values.begin(); it != Values.end(); it++) if (token == it->first->name) {
+				list.back() = it->first;
+				break;
+			};
+		    line.erase(0, pos + delimiter.length());
+		}
+
+		//Grab last
+		list.push_back(NULL);
+		for (it = Values.begin(); it != Values.end(); it++) if (line == it->first->name) {
+			list.back() = it->first;
+			break;
+		};
+
+		//Now, for each line append value to each device
+		unsigned int i;
+		length = 0;
+		while (std::getline(file,line)) {
+			length++;
+			i = 0;
+			while ((pos = line.find(delimiter)) != std::string::npos) {
+				token = line.substr(0, pos);
+				line.erase(0, pos + delimiter.length());
+				if (i >= list.size()) break; //break from loop if this line has more cols than first line
+				if (list[i] != NULL) Values[list[i]].push_back( (float) std::atof(token.c_str()) );
+				i++;
 			}
+			//Grab last
+			if (i >= list.size()) break; //break from loop if this line has more cols than first line
+			if (list[i] != NULL) Values[list[i]].push_back( (float) std::atof(line.c_str()));
 		}
 	} else {
 
