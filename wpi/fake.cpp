@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+using namespace std;
+
 class DoubleSolenoid {
 public:
 	enum Value {
@@ -14,7 +16,16 @@ public:
 		return kOff;
 	}
 	void Set(Value x) {
-
+		switch (x) {
+			case kForward:
+				cout << "Double Solenoid set to kForward" << endl;
+				break;
+			case kReverse:
+				cout << "Double Solenoid set to kReverse" << endl;
+				break;
+			default:
+				cout << "Double Solenoid set to kOff" << endl;
+		}
 	}
 };
 class Relay {
@@ -29,7 +40,19 @@ public:
 		return kOn;
 	}
 	void Set(Value x) {
-
+		switch (x) {
+			case kOn:
+				cout << "Relay set to kOn" << endl;
+				break;
+			case kForward:
+				cout << "Relay set to kForward" << endl;
+				break;
+			case kReverse:
+				cout << "Relay set to kReverse" << endl;
+				break;
+			default:
+				cout << "Relay set to kOff" << endl;
+		}
 	}
 };
 class Servo {
@@ -38,7 +61,7 @@ public:
 		return 0.8;
 	}
 	void Set(float x) {
-
+		cout << "Setting a Servo to " << x << endl;
 	}
 };
 class Solenoid {
@@ -48,7 +71,7 @@ public:
 		return true;
 	}
 	void Set(bool x) {
-
+		cout << "Setting a solenoid to " << x << endl;
 	}
 };
 class SpeedController {
@@ -57,7 +80,7 @@ public:
 		return 0.56;
 	}
 	void Set(float x) {
-
+		cout << "Setting a speed controller to " << x << endl;
 	}
 };
 class Command {
