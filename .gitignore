@@ -32,3 +32,4 @@ Debug/
 release/RiptideRecorder.zip
 #for testing
 saves/
+*.csv
