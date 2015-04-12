@@ -16,7 +16,7 @@ public:
 	std::string name;
 	virtual float get() = 0;
 	virtual void set(float x) = 0;
-	virtual ~Device();
+	virtual ~Device() = 0;
 };
 
 #endif /* DEVICE_H_ */
