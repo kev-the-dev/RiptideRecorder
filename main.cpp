@@ -1,8 +1,16 @@
 #include <iostream>
 #include "RiptideRecorder/RiptideRecorder.h"
 #include "TestDevice.h"
+
 using namespace std;
-int main() {
+int main(int argc, char* argv[]) {
+
+	cout << argc << endl;
+	for (int h = 0; h<argc; h++)
+		cout << argv[h] << endl;
+
+	cout << endl;
+
 	Recorder* rec = Recorder::GetInstance();
 
 	//One of each device
@@ -22,19 +30,31 @@ int main() {
 	rec->AddDevice(dev);
 
 	//Creates macro
+	cout << dev->GetName() << endl;
+
+
 	Macro* mac = rec -> macro();
 
+	int iterations;
+	//if (argc > 1) iterations = std::atoi(argv[1]);
+	//else
+	iterations = 8;
 
-	for (int i = 0; i<3000; i++) {
+
+	for (int i = 0; i<iterations; i++) {
 		mac->Record();
 	}
 
-	mac->WriteFile("saves/auto.csv");
+	string path (argv[0]);
+	path = path.substr(0, path.size() - 4);
+
+	mac->WriteFile(path + "/../saves/auto.csv");
 	mac->Reset();
 
-	mac->ReadFile("saves/auto.csv");
+	mac->ReadFile(path +  "/../saves/auto.csv");
 	while (!mac->IsFinished()) mac->PlayBack();
 
-	std::cout << "plz work" << std::endl;
+	cout << "plz work" << endl;
 
+	return 0;
 }
