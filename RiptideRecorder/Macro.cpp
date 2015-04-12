@@ -51,7 +51,7 @@ void Macro::WriteFile(std::string filename) {
 	 file.open(filename.c_str());
 	 if (file.is_open()) {
 		 for (it = Values.begin(); it != Values.end(); it++) {
-			 file << it->first->name;
+			 file << it->first->GetName();
 			if (it != --Values.end()) file << ",";
 		 }
 		 file << "\n";
@@ -87,7 +87,7 @@ void Macro::ReadFile(std::string filename) {
 		while ((pos = line.find(delimiter)) != std::string::npos) {
 			token = line.substr(0, pos);
 			list.push_back(NULL);
-			for (it = Values.begin(); it != Values.end(); it++) if (token == it->first->name) {
+			for (it = Values.begin(); it != Values.end(); it++) if (token == it->first->GetName()) {
 				list.back() = it->first;
 				break;
 			};
@@ -96,7 +96,7 @@ void Macro::ReadFile(std::string filename) {
 
 		//Grab last
 		list.push_back(NULL);
-		for (it = Values.begin(); it != Values.end(); it++) if (line == it->first->name) {
+		for (it = Values.begin(); it != Values.end(); it++) if (line == it->first->GetName()) {
 			list.back() = it->first;
 			break;
 		};
