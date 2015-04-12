@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/bin/sh
 zip -r release/RiptideRecorder.zip RiptideRecorder/ install.txt
