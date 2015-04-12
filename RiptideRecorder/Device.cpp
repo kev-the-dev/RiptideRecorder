@@ -12,4 +12,9 @@ Device::Device(std::string x) {
 Device::~Device() {
 
 }
-
+void Device::SetName(std::string n) {
+	name = n;
+}
+std::string Device::GetName() {
+	return name;
+}

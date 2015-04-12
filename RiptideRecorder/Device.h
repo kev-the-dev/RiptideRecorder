@@ -13,10 +13,17 @@
 class Device {
 public:
 	Device(std::string x);
-	std::string name;
+
+	//Getter/setting functions! Woo I'm a programmer now
+	std::string GetName();
+	void SetName(std::string);
+
+
 	virtual float get() = 0;
 	virtual void set(float x) = 0;
 	virtual ~Device() = 0;
+protected:
+	std::string name;
 };
 
 #endif /* DEVICE_H_ */
