@@ -32,13 +32,11 @@ int main(int argc, char* argv[]) {
 	//Creates macro
 	cout << dev->GetName() << endl;
 
-
 	Macro* mac = rec -> macro();
 
 	int iterations;
-	//if (argc > 1) iterations = std::atoi(argv[1]);
-	//else
-	iterations = 8;
+	if (argc > 1) iterations = std::atoi(argv[1]);
+	else iterations = 3000;
 
 
 	for (int i = 0; i<iterations; i++) {
