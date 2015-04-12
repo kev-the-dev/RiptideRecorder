@@ -8,7 +8,7 @@
 #ifndef DEVICES_TESTDEVICE_H_
 #define DEVICES_TESTDEVICE_H_
 
-#include "RiptideRecorder/Device.h"
+#include "../RiptideRecorder/Device.h"
 #include <string>
 
 class TestDevice : public Device {
