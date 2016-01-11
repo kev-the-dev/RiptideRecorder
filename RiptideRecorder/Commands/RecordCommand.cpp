@@ -11,7 +11,6 @@ RecordCommand::RecordCommand(Macro* m) {
 	macro = m;
 }
 void RecordCommand::Initialize() {
-	if (macro->playCommand->IsRunning()) macro->playCommand->Cancel();
 	macro->Reset();
 }
 
@@ -27,5 +26,5 @@ void RecordCommand::End() {
 
 }
 void RecordCommand::Interrupted() {
-
+	this->End();
 }

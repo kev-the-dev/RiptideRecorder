@@ -20,6 +20,7 @@
 class Macro {
 public:
 	Macro(std::vector<Device*> devices);
+	Macro(std::vector<Device*> devices,std::vector<Subsystem* > s);
 	void Reset();
 	void Record();
 	void PlayReset();
@@ -35,12 +36,12 @@ public:
 
 	bool IsFinished();
 
-	Command* GetPlayCommand();
-	Command* GetPlayCommand(std::string FileName);
-	Command* GetRecordCommand();
+	Command* NewPlayCommand();
+	Command* NewPlayFileCommand(std::string FileName);
+	Command* NewRecordCommand();
+	Command* NewRecordFileCommand(std::string FileName);
 
-	Command* playCommand;
-	Command* recordCommand;
+	std::vector<Subsystem * > subsystems;
 private:
 	unsigned int length;
 	unsigned int position;

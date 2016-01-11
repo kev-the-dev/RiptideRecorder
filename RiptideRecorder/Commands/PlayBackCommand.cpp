@@ -9,16 +9,11 @@
 
 PlayBackCommand::PlayBackCommand(Macro* m) {
 	macro = m;
-}
-PlayBackCommand::PlayBackCommand(Macro* m,std::string f) {
-	FileName = f;
-	macro = m;
+	for(std::vector<Subsystem*>::iterator sys = m->subsystems.begin(); sys != m->subsystems.end(); ++sys) {
+		Requires(*sys);
+	}
 }
 void PlayBackCommand::Initialize() {
-	if (macro->recordCommand->IsRunning()) macro->recordCommand->Cancel();
-
-	if(!FileName.empty()) macro->ReadFile(FileName);
-
 	macro->PlayReset();
 }
 

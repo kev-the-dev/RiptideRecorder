@@ -15,15 +15,13 @@
 class PlayBackCommand : public Command{
 public:
 	PlayBackCommand(Macro* m);
-	PlayBackCommand(Macro* m,std::string f);
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
-private:
+protected:
 	Macro* macro;
-	std::string FileName;
 };
 
 #endif /* SRC_RIPTIDERECORDER_PLAYBACKCOMMAND_H_ */

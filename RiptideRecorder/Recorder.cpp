@@ -30,8 +30,11 @@ void Recorder::AddDevice(std::string n,DoubleSolenoid* ds) {
 void Recorder::AddDevice(std::string n, Servo* s) {
 	AddDevice(new ServoDevice(n,s));
 }
+void Recorder::AddSubsystem(Subsystem* s) {
+	subsystems.push_back(s);
+}
 Macro* Recorder::macro () {
-	return new Macro(this->devices);
+	return new Macro(this->devices,this->subsystems);
 }
 Recorder* Recorder::GetInstance() {
 	if (!instance)

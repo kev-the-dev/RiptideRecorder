@@ -34,11 +34,13 @@ class Recorder {
 		void AddDevice(std::string n, Solenoid* s);
 		void AddDevice(std::string n, DoubleSolenoid* ds);
 		void AddDevice(std::string n, Servo* s);
+		void AddSubsystem(Subsystem* s);
 
 		Macro* macro();
 		static Recorder* GetInstance();
 	private:
 		std::vector<Device *> devices;
+		std::vector<Subsystem *> subsystems;
 		static Recorder* instance;
 };
 

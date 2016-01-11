@@ -19,7 +19,7 @@ class RecordCommand : public Command{
 		virtual bool IsFinished();
 		virtual void End();
 		virtual void Interrupted();
-	private:
+	protected:
 		Macro* macro;
 };
 
