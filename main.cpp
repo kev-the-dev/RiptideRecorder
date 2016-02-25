@@ -34,25 +34,30 @@ int main(int argc, char* argv[]) {
 
 	Macro* mac = rec -> macro();
 
-	int iterations;
-	if (argc > 1) iterations = std::atoi(argv[1]);
-	else iterations = 3000;
+
+	int iterations = 5;
 
 
 	for (int i = 0; i<iterations; i++) {
 		mac->Record();
 	}
 
-	string path (argv[0]);
-	path = path.substr(0, path.size() - 4);
-
-	mac->WriteFile(path + "/../saves/auto.csv");
+	mac->WriteFile("auto.csv");
 	mac->Reset();
 
-	mac->ReadFile(path +  "/../saves/auto.csv");
-	while (!mac->IsFinished()) mac->PlayBack();
+	mac->ReadFile("auto.csv");
+	while (!mac->IsFinished())
+	{
+		mac->PlayBack();
+	}
 
 	cout << "plz work" << endl;
+
+	mac->Reset();
+	Command* recCom = mac->NewRecordFileCommand("auto2.csv");
+	recCom->Initialize();
+	for (int i = 0; i < 30; i ++) recCom->Execute();
+	recCom->End();
 
 	return 0;
 }

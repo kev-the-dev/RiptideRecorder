@@ -109,13 +109,13 @@ public:
 		End();
 		running = false;
 	}
-
-protected:
 	virtual void Initialize() = 0;
 	virtual void Execute() = 0;
 	virtual bool IsFinished() = 0;
 	virtual void End() = 0;
 	virtual void Interrupted() = 0;
+protected:
+
 	void Requires(Subsystem* s)
 	{
 

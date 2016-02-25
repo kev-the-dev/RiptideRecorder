@@ -46,8 +46,9 @@ private:
 	unsigned int length;
 	unsigned int position;
 
-	std::map<Device * , std::vector<float> >::iterator it;
-	std::map <Device * , std::vector<float> > Values;
+	typedef std::map<Device * , std::vector<float> > Vals;
+	typedef Vals::iterator valsIt;
+	Vals Values;
 };
 
 #endif /* MACRO_H_ */

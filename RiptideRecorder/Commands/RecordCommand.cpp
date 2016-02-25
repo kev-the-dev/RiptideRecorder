@@ -26,5 +26,5 @@ void RecordCommand::End() {
 
 }
 void RecordCommand::Interrupted() {
-	this->End();
+	End();
 }

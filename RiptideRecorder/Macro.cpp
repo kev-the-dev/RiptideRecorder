@@ -12,19 +12,27 @@
 #include "Commands/RecordFileCommand.h"
 
 Macro::Macro(std::vector<Device*> devices) {
-	for(std::vector<Device*>::iterator dev = devices.begin(); dev != devices.end(); ++dev) {
-		Values[*dev].clear();
+	Values = Vals{};
+	for(std::vector<Device*>::iterator dev = devices.begin(); dev != devices.end(); dev++) {
+		Values.insert( std::pair<Device*,std::vector<float> >(*dev,std::vector<float>()) );
 	}
+	subsystems = std::vector<Subsystem * >();
 	length = 0;
 	position = 0;
 
-};
+}
 Macro::Macro(std::vector<Device*> devices,std::vector<Subsystem* > s) : Macro(devices) {
+	Values = Vals{};
+	for(std::vector<Device*>::iterator dev = devices.begin(); dev != devices.end(); dev++) {
+		Values.insert( std::pair<Device*,std::vector<float> >(*dev,std::vector<float>()) );
+	}
 	subsystems = s;
+	length = 0;
+	position = 0;
 }
 //Removes in memory loaded recording and resets playback to position zero
 void Macro::Reset() {
-	for (it = Values.begin(); it != Values.end(); it++) {
+	for (valsIt it = Values.begin(); it != Values.end(); it++) {
 		it->second = std::vector<float> ();
 	}
 	length = 0;
@@ -36,7 +44,7 @@ void Macro::PlayReset() {
 }
 //Records an instant of all devices
 void Macro::Record() {
-	for (it = Values.begin(); it != Values.end(); it++) {
+	for (valsIt it = Values.begin(); it != Values.end(); it++) {
 		it->second.push_back(it->first->get());
 	}
 	length++;
@@ -44,7 +52,7 @@ void Macro::Record() {
 //Plays back one instant of devices and increments play back position
 void Macro::PlayBack() {
 	if (position >= length) return;
-	for (it = Values.begin(); it != Values.end(); it++) {
+	for (valsIt it = Values.begin(); it != Values.end(); it++) {
 		if (position >= it->second.size()) {
 			it->first->set(0);
 			continue;
@@ -59,7 +67,7 @@ void Macro::WriteFile(std::string filename) {
 	 file.open(filename.c_str());
 	 if (file.is_open()) {
 		 //Writes the heading line with the device names, so can be matched on file readback
-		 for (it = Values.begin(); it != Values.end(); it++) {
+		 for (valsIt it = Values.begin(); it != Values.end(); it++) {
 			 file << it->first->GetName();
 			if (it != --Values.end()) file << ",";
 		 }
@@ -67,7 +75,7 @@ void Macro::WriteFile(std::string filename) {
 
 		 //Writes a new line for the in memory values at each recorded instant in the order the heading establishes
 		 for (unsigned int i = 0; i<length;i++) {
-			 for (it = Values.begin(); it != Values.end(); it++) {
+			 for (valsIt it = Values.begin(); it != Values.end(); it++) {
 				 if (i >= it->second.size()) {
 					 file << 0;
 				 }
@@ -98,7 +106,7 @@ void Macro::ReadFile(std::string filename) {
 		while ((pos = line.find(delimiter)) != std::string::npos) {
 			token = line.substr(0, pos);
 			list.push_back(NULL);
-			for (it = Values.begin(); it != Values.end(); it++) if (token == it->first->GetName()) {
+			for (valsIt it = Values.begin(); it != Values.end(); it++) if (token == it->first->GetName()) {
 				list.back() = it->first;
 				break;
 			};
@@ -107,7 +115,7 @@ void Macro::ReadFile(std::string filename) {
 
 		//Grab last
 		list.push_back(NULL);
-		for (it = Values.begin(); it != Values.end(); it++) if (line == it->first->GetName()) {
+		for (valsIt it = Values.begin(); it != Values.end(); it++) if (line == it->first->GetName()) {
 			list.back() = it->first;
 			break;
 		};
