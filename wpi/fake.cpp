@@ -55,6 +55,10 @@ public:
 		}
 	}
 };
+class Subsystem
+{
+
+};
 class Servo {
 public:
 	float Get() {
@@ -112,7 +116,10 @@ protected:
 	virtual bool IsFinished() = 0;
 	virtual void End() = 0;
 	virtual void Interrupted() = 0;
+	void Requires(Subsystem* s)
+	{
 
+	}
 private:
 	bool running;
 };
